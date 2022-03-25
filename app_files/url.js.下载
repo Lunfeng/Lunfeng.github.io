@@ -1,0 +1,10 @@
+var baseUrl = "http://iapp.zzuli.edu.cn/portal";
+var pushUuIdURL = "http://campus.zzuli.edu.cn/portal-pc";
+var uploadImgUrl = 'http://kys.zzuli.edu.cn:80/authentication'
+var openIdScred = '123456';
+//新闻地址
+var newsUrl = 'news_detail.html?id=http://news.zzuli.edu.cn/';
+//socketUrl
+var socketUrl='ws://iapp.zzuli.edu.cn/portal/websocket/';
+var appId='1';
+var openId = '123456';

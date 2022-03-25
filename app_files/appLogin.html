@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!-- saved from url=(0095)http://cgyy.zzuli.edu.cn/Views/User/MyFieldDetail.html?OID=96c2d435-17b2-4483-9671-81731929a552 -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        @charset "UTF-8";
+
+        [ng\:cloak],
+        [ng-cloak],
+        [data-ng-cloak],
+        [x-ng-cloak],
+        .ng-cloak,
+        .x-ng-cloak,
+        .ng-hide:not(.ng-hide-animate) {
+            display: none !important;
+        }
+
+        ng\:form {
+            display: block;
+        }
+    </style>
+
+    <title>场地订单详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link href="./weui.css" rel="stylesheet" type="text/css">
+    <link href="./common.css" rel="stylesheet" type="text/css">
+    <link href="./style_sport.css" rel="stylesheet" type="text/css">
+    <script src="./jqurey.js.下载" type="text/javascript"></script>
+    <!-- <script src="./weui.js.下载"></script> -->
+    <!--ionic滚动条-->
+    <link href="./ionic.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./ionicons.min.css">
+    <!-- <script src="./ionic.bundle.min.js.下载"></script>
+    <script src="./mui.js.下载"></script>
+    <script src="./mui.previewimage.js.下载"></script> -->
+    <!-- <script src="./mui.zoom.js.下载"></script> -->
+    <link rel="stylesheet" href="./mui.css">
+    <link rel="stylesheet" href="./codeImage.css">
+    <style>
+        html {
+            overflow: auto !important;
+        }
+
+        .remaining {
+            line-height: 31px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .remaining .payTime {
+            margin-left: 10px;
+            color: red;
+            font-size: 1.3rem;
+        }
+
+        .jl_list li .jl_title .selpayment {
+            text-indent: 0;
+        }
+
+        .jl_list li .jl_row>span {
+            margin-left: 10px;
+        }
+
+        .jl_list li .jl_row .left-icon {
+            margin-right: 15px;
+            font-size: 1.3rem;
+        }
+
+        .jl_list li .jl_row .right-icon {
+            float: right;
+            font-size: 1.6rem;
+        }
+
+        .jl_list li .jl_row .memcard {
+            color: rgb(255, 157, 0);
+        }
+
+        .jl_list li .jl_row .alipay {
+            color: rgb(4, 168, 236);
+        }
+
+        .jl_list li .jl_row .weixin {
+            color: rgb(60, 176, 53);
+        }
+
+        .jl_list li .jl_row .ion-ios-checkmark {
+            color: rgb(252, 152, 0);
+        }
+
+        .selectCard li {
+            margin-bottom: 0;
+            padding: 7px;
+        }
+
+        .code {
+            width: 210px;
+            height: 210px;
+            margin: 20px auto 10px auto;
+        }
+
+        .codebar {
+            margin: 20px 30px 10px 30px;
+        }
+
+        .backbt .bt {
+            display: block;
+            margin: 0 auto;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+
+        .height200 {
+            height: 200px;
+        }
+
+        img {
+            width: 210px !important;
+            height: 210px !important;
+            margin: 20px auto 10px auto;
+        }
+
+        .numstyle {
+            color: #079fff;
+            border: #079fff solid 1px;
+        }
+    </style>
+    <script>
+        mui.init();
+    </script>
+    <link rel="stylesheet" href="./iconfont(1).css">
+    <!-- <script type="text/javascript" src="./venue.js.下载"></script>
+    <script type="text/javascript" src="./jweixin-1.4.0.js.下载"></script>
+    <script type="text/javascript" src="./eruda.min.js.下载"></script> -->
+    <style type="text/css">
+        .eruda-search-highlight-block {
+            <br>display: inline;
+        }
+
+        <br>.eruda-search-highlight-block .eruda-keyword {
+            <br>background: #ffc107;
+            <br>color: #fff;
+        }
+
+        <br>
+    </style>
+    /* <script type="text/javascript" src="./qrcode.min.js.下载"></script> */
+    <script>
+        $(document).ready(function () {
+            $("#btn").click(function () {
+                $(".name1").text($("#name").val());
+                $(".num1").text($("#num").val());
+                $(".sport1").text($("#sport").val());
+                $(".court1").text($("#court").val());
+                $(".data1").text($("#data").val());
+                $(".day1").text($("#day").val());
+                $(".time1").text($("#time").val());
+
+                $("#form").remove();
+            });
+        });
+    </script>
+
+</head>
+
+<body class="grade-a platform-browser platform-win32 platform-ready">
+    <div id="form" style="margin: 20px; padding: 20px; background-color: cyan; display: block;">
+        <br>
+        <br>
+        <br>
+        <br>
+        <input id="name" value="姓名">
+        <input id="num" value="学号">
+        <select id="sport" style="width: 50%;">
+            <option value="健身区域">健身区域</option>
+            <option value="排球">排球</option>
+            <option value="羽毛球">羽毛球</option>
+            <option value="乒乓球">乒乓球</option>
+        </select><br>
+        <input id="court" value="场地"><br>
+        <input id="data" value="2022/3/25"><br>
+        <input id="day" value="星期五"><br>
+        <input id="time" value="16:30-17:30"><br>
+        <button id="btn">提交</button><br>
+        <br>
+    </div>
+
+    <div class="t_head">
+        <div class="wrap">
+            <div class="back" onclick="history.back()"><i class="icons"></i></div>
+            <h3 class="title">场地订单详情</h3>
+        </div>
+    </div>
+    <div class="jl_main top_50">
+        <ul class="jl_list">
+            <li class="border_b">
+                <p class="remaining" id="premain"><span id="spants">本订单已支付完成</span></p>
+            </li>
+        </ul>
+        <ul class="jl_list" id="ulorder">
+            <li class="border_b">
+                <div class="bot_con">
+                    <div class="jl_title border_b"></div>
+                    <div class="jl_zz wrap">
+                        <div class="jl_row border_b">订单号:<span>WXYD22032511091355</span></div>
+                        <div class="jl_row border_b">场馆:<span>体育馆</span></div>
+                        <div class="jl_row border_b">预订人:<span class="name1">张三</span></div>
+                        <div class="jl_row border_b">学工号:<span class="num1">123456789123</span></div>
+                        <div class="jl_row border_b">订单状态:<span>支付成功</span></div>
+                        <div class="jl_row border_b">金额:<span>0元</span></div>
+                        <div class="jl_row border_b last">实付金额:<span>1(元/次)</span></div>
+                    </div>
+                </div>
+            </li>
+            <li class="border_b">
+                <div class="bot_con">
+                    <div class="jl_title border_b">
+                        <div class="wrap"><span class="place">1</span>
+                            <div class="sport1" style="display: inline;">乒乓球</div>
+                            <div class="court1" style="display: inline;">03-2</div>
+                        </div>
+                    </div>
+                    <div class="jl_zz wrap">
+                        <div class="jl_row border_b">时间:<span class="data1">2022/3/25</span><span
+                                class="day1">星期五</span><span class="time1">20:30-21:30</span>
+                        </div>
+                        <div class="jl_row border_b">金额:<span>0元</span></div>
+                        <div class="jl_row border_b last">实付金额:<span>1元</span></div>
+                    </div>
+                </div>
+                <div style="text-align:center;margin-bottom:10px;margin-top:10px;"><button type="button"
+                        class="bt mui-btn mui-btn-yellow"
+                        onclick="showShare(&#39;aaa7c684-7610-4600-839a-eb0c42276d8b&#39;)">查看分享记录</button></div>
+                <div id="daaa7c684-7610-4600-839a-eb0c42276d8b" style="display:none;">
+                    <div id="divc1a896f4-6842-46d7-8396-9d218444ee71">
+                        <div style="text-align:center;margin-bottom:10px;margin-top:10px;"><button type="button"
+                                id="btnShareEWMc1a896f4-6842-46d7-8396-9d218444ee71" class="bt mui-btn mui-btn-yellow"
+                                onclick="fieldShare(&#39;c1a896f4-6842-46d7-8396-9d218444ee71&#39;)">分享场地</button></div>
+                    </div>
+                    <div class="bot_con">
+                        <div class="jl_title border_b">
+                            <div class="wrap"><span class="place">1</span>
+                                <div class="name1">张三</div>
+                            </div>
+                        </div>
+                        <div class="jl_row border_b">
+                            <div class="wrap">学工号:<span class="num1">123456789123</span></div>
+                        </div>
+                        <div class="jl_row border_b">
+                            <div class="wrap">分享时间:<span>2022-03-25 11:09:13</span></div>
+                        </div>
+                    </div>
+                    <div id="shareaaa7c684-7610-4600-839a-eb0c42276d8b">
+            
+    </div>
+    </div>
+    </li>
+    </ul>
+    <div style="text-align:center;margin-bottom:10px;color:red;" id="divback"></div>
+    </div>
+    <div class="backbt">
+        <button type="button" class="bt mui-btn mui-btn-yellow" onclick="checkRefund()" id="btnrefund"
+            style="display:none;">我要退款</button>
+        <button type="button" class="bt mui-btn mui-btn-yellow" onclick="fieldCancel()" id="btncancel"
+            style="display:none;">取消预订</button>
+        <button type="button" class="bt mui-btn mui-btn-yellow" onclick="gohome()">返回首页</button>
+    </div>
+
+    <div class="sport" id="sport_yd" style="display:none;">
+        <!--选择购买份数-->
+        <div class="weui_dialog">
+            <ul style="margin-top:20px;">
+                <li style="margin-bottom:10px;">退款理由</li>
+            </ul>
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea name="txtrefund" id="txtrefund" class="weui_textarea" placeholder="请写下对您的退款理由，有助于您成功申请退款！"
+                        rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="weui_dialog_ft">
+                <a href="javascript:;" class="weui_btn_dialog default" onclick="hidediv();">取消</a>
+                <a href="javascript:;" class="weui_btn_dialog primary" onclick="gotorefund();" id="apay">确定</a>
+            </div>
+        </div>
+    </div>
+
+    <!--分享给校内人员 -->
+    <div class="sport" id="sport_zgcm" style="display:none;">
+        <div class="weui_dialog">
+            <ul style="margin-top:20px;">
+                <li style="        margin-bottom: 10px;">分享场地</li>
+            </ul>
+            <div class="submittext">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <span>学号：</span> <input id="inputmemberno" class="weui_input" type="text" placeholder="请输入分享者的学工号"
+                        value="" style="width:70%;display:inline;">
+                </div>
+            </div>
+            <div class="weui_dialog_ft">
+                <a href="javascript:void(0);" class="weui_btn_dialog default" onclick="hidezgcm();">取消</a>
+                <a href="javascript:void(0);" class="weui_btn_dialog primary" onclick="shareFieldzgcm();">提交</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="sport" id="sport_bg" style="display:none;">
+        <div class="weui_mask"></div>
+    </div>
+    <script>
+        var OID = getRequest('OID');
+        function showShare(OID) {
+            if ($("#d" + OID).is(":hidden")) {
+                $("#d" + OID).show();
+            }
+            else {
+                $("#d" + OID).hide();
+            }
+        }
+
+        mui.previewImage();
+    </script>
+    <div id="__MUI_PREVIEWIMAGE" class="mui-slider mui-preview-image mui-fullscreen">
+        <div class="mui-preview-header"><span class="mui-preview-indicator"></span></div>
+        <div class="mui-slider-group"></div>
+        <div class="mui-preview-footer mui-hidden"></div>
+        <div class="mui-preview-loading"><span class="mui-spinner mui-spinner-white"></span></div>
+    </div>
+
+</body>
+
+</html>

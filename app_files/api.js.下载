@@ -1,0 +1,502 @@
+//临时使用
+localStorage.removeItem("memberAppData");
+localStorage.removeItem("collectionAppData");
+
+if (window != top) {
+    top.location.href = location.href;
+}
+var isLogin;
+var appUserInfo;
+var target = 5;
+mui(".mui-bar-tab").on('tap', 'a.mui-tab-item', function () {
+    var a = document.createElement('a');
+    a = this.cloneNode(true);
+    a.click();
+});
+var ua = window.navigator.userAgent.toLowerCase();
+if (ua.match(/MicroMessenger/i) == 'micromessenger' || ua.match(/_SQ_/i) == '_sq_') {
+    $(".mui-bar-nav,.mui-bar-transparent").hide();
+    $(".mui-bar-nav~.mui-content").css("padding-top", "10px")
+    $("#collectBtn").show();
+} else {
+    $(".head").show()
+}
+
+function GetQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+}
+
+
+var agentInfo = navigator.userAgent;
+var getVersionInfo = agentInfo.substring(agentInfo.indexOf("{"), agentInfo.indexOf("}") + 1)
+if (getVersionInfo.indexOf("=") > -1) {
+    getVersionInfo = getVersionInfo.replace(/=/g, ':')
+}
+if (getVersionInfo == "") {
+    nowEdition = {
+        'version': '',
+        'device': ''
+    }
+} else {
+    if (getVersionInfo.length > 7) {
+        var nowEdition = (new Function('return ' + getVersionInfo + ';'))();
+    } else {
+        var nowEdition = {
+            'version': getVersionInfo.substring(1, getVersionInfo.length - 1),
+            'device': ''
+        }
+    }
+}
+if (location.href.indexOf('index.html') > -1) {
+    target = 1
+}
+if (location.href.indexOf('news.html') > -1) {
+    target = 3
+}
+if (location.href.indexOf('yingyong.html') > -1) {
+    target = 2
+}
+if (location.href.indexOf('user.html') > -1) {
+    target = 4
+}
+//统计设备号信息及访问目标
+$.ajax({
+    url: baseUrl + '/app/portalAccessLog/insertPortalAccessLog',
+    type: 'POST',
+    data: {
+        portalAccessLogEquipmentId: nowEdition.device,
+        portalAccessLogTarget: target,
+        portalAccessLogVersionNumber: nowEdition.version
+    }
+})
+
+var loadings = $('<img id="bg" src="./images/3.svg" alt="">')
+$("body").append(loadings);
+
+//创建操作栏
+function createOperation() {
+    $("body").append('<ul class="operationBox">' +
+        '<span class="arrow"></span>' +
+        '    <li onclick="scan()" id="scan"><i class="iconfont icon-saoma"></i>扫一扫</li>' +
+        '    <li onclick="cleanUpAppCache()"><i class="iconfont icon-qingchu"></i>清除缓存</li>' +
+        // '    <li><i class="iconfont icon-dingwei"></i>获取定位</li>' +
+        '</ul>');
+    $("body").on("click", function (evt) {
+        var e = (evt) ? evt : window.event;
+        if (window.event) {
+            e.cancelBubble = true;// ie下阻止冒泡
+        } else {
+            e.stopPropagation();// 其它浏览器下阻止冒泡
+        }
+        $(".operationBox").hide()
+    })
+}
+
+createOperation();
+
+function showOperation(evt) {
+    var e = (evt) ? evt : window.event;
+    if (window.event) {
+        e.cancelBubble = true;// ie下阻止冒泡
+    } else {
+        e.stopPropagation();// 其它浏览器下阻止冒泡
+    }
+    $(".operationBox").toggle()
+}
+
+function getDb() {
+    if (localStorage.getItem('message') != null) {
+        $(".mui-badge").show();
+        $(".mui-badge,.my-badge,.news,.all").html(localStorage.getItem('message'))
+    }
+    if (localStorage.getItem('db') != null) {
+        $(".db").html(localStorage.getItem('db'));
+        var count = $(".mui-badge,.my-badge,.all").html();
+        $(".mui-badge,.my-badge,.all").html(parseInt(count) + parseInt(localStorage.getItem('db')));
+    }
+    if (localStorage.getItem('dy') != null) {
+        $(".dy").html(localStorage.getItem('dy'));
+        var count = $(".mui-badge,.my-badge,.all").html();
+        $(".mui-badge,.my-badge,.all").html(parseInt(count) + parseInt(localStorage.getItem('dy')));
+    }
+    if (localStorage.getItem('yb') != null) {
+        $(".yb").html(localStorage.getItem('yb'));
+    }
+    if (localStorage.getItem('yy') != null) {
+        $(".yy").html(localStorage.getItem('yy'));
+    }
+    if (localStorage.getItem('sq') != null) {
+        $(".sq").html(localStorage.getItem('sq'));
+    }
+    $.ajax({
+        url: baseUrl + '/app/weiMessage/countUnreadMessagesForCurrentUser',
+        type: 'POST',
+        success: function (res) {
+            if (res.success) {
+                if (localStorage.getItem('message') == null) {
+                    var count = $(".mui-badge,.my-badge,.all").html();
+                    $(".mui-badge").show();
+                    $(".mui-badge,.my-badge,.news,.all").html(res.obj)
+                    localStorage.setItem("message", res.obj)
+                } else {
+                    localStorage.setItem("message", res.obj)
+                }
+            }
+        },
+        error: function (err) {
+
+        }
+    })
+    $.ajax({
+        url: baseUrl + '/app/oa/workFolwDb',
+        type: 'POST',
+        data: {
+            type: "db"
+        },
+        success: function (json) {
+            if (json.success && json.count != null) {
+                if (localStorage.getItem("db") == null) {
+                    $(".db").html(json.count);
+                    var count = $(".mui-badge,.my-badge,.all").html();
+                    $(".mui-badge,.my-badge,.all").html(parseInt(count) + parseInt(json.count));
+                    localStorage.setItem("db", json.count)
+                } else {
+                    localStorage.setItem("db", json.count)
+                }
+            }
+        },
+        error: function (msg) {
+
+        }
+    })
+    $.ajax({
+        url: baseUrl + '/app/oa/workFolwDb',
+        type: 'POST',
+        data: {
+            type: "dy"
+        },
+        success: function (json) {
+            if (json.success && json.count != null) {
+                if (localStorage.getItem("dy") == null) {
+                    $(".dy").html(json.count);
+                    var count = $(".mui-badge,.my-badge,.all").html();
+                    $(".mui-badge,.my-badge,.all").html(parseInt(count) + parseInt(json.count));
+                    localStorage.setItem("dy", json.count)
+                } else {
+                    localStorage.setItem("dy", json.count)
+                }
+            }
+        },
+        error: function (msg) {
+
+        }
+    })
+    $.ajax({
+        url: baseUrl + '/app/oa/workFolwDb',
+        type: 'POST',
+        data: {
+            type: "yb"
+        },
+        success: function (json) {
+            if (json.success && json.count != null) {
+                if (localStorage.getItem("yb") == null) {
+                    $(".yb").html(json.count);
+                    localStorage.setItem("yb", json.count)
+                } else {
+                    localStorage.setItem("yb", json.count)
+                }
+            }
+        },
+        error: function (msg) {
+
+        }
+    })
+    $.ajax({
+        url: baseUrl + '/app/oa/workFolwDb',
+        type: 'POST',
+        data: {
+            type: "yy"
+        },
+        success: function (json) {
+            if (json.success && json.count != null) {
+                if (localStorage.getItem("yy") == null) {
+                    $(".yb").html(json.count);
+                    localStorage.setItem("yy", json.count)
+                } else {
+                    localStorage.setItem("yy", json.count)
+                }
+            }
+        },
+        error: function (msg) {
+
+        }
+    })
+    $.ajax({
+        url: baseUrl + '/app/oa/workFolwApply',
+        type: 'POST',
+        success: function (json) {
+            if (json.success && json.count != null) {
+                if (localStorage.getItem("sq") == null) {
+                    $(".yb").html(json.count);
+                    localStorage.setItem("sq", json.count)
+                } else {
+                    localStorage.setItem("sq", json.count)
+                }
+            }
+        },
+        error: function (msg) {
+
+        }
+    })
+}
+
+$.ajax({
+    url: baseUrl + '/app/casMember/getUserInSession',
+    type: 'POST',
+    async: false,
+    success: function (json) {
+        if (typeof json == "string") {
+            isLogin = false;
+        } else {
+            isLogin = true;
+            appUserInfo = json.obj;
+            getDb();
+        }
+    },
+    error: function (msg) {
+
+    }
+})
+
+function getSecretKey(appId) {
+    var str;
+    $.ajax({
+        url: baseUrl + '/app/enAppUser',
+        type: 'POST',
+        async: false,
+        data: {
+            appId: appId
+        },
+        success: function (json) {
+            if (json.success) {
+                str = json.obj;
+            }
+        },
+        error: function (msg) {
+
+        }
+    })
+    return encodeURIComponent(str);
+}
+
+
+/**
+ * 初始化jsbridge
+ * @param readyCallback 初始化完成后的回调
+ */
+var u = navigator.userAgent;
+var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+try {
+    var initJsBridge = function (readyCallback) {
+        // 注册jsbridge
+        function connectWebViewJavascriptBridge(callback) {
+            if (isAndroid) {
+                if (window.WebViewJavascriptBridge) {
+                    callback(WebViewJavascriptBridge)
+                } else {
+                    document.addEventListener(
+                        'WebViewJavascriptBridgeReady'
+                        , function () {
+                            callback(WebViewJavascriptBridge)
+                        },
+                        false
+                    );
+                }
+                return;
+            }
+
+            if (isiOS) {
+                if (window.WebViewJavascriptBridge) {
+                    return callback(WebViewJavascriptBridge);
+                }
+                if (window.WVJBCallbacks) {
+                    return window.WVJBCallbacks.push(callback);
+                }
+                window.WVJBCallbacks = [callback];
+                var WVJBIframe = document.createElement('iframe');
+                WVJBIframe.style.display = 'none';
+                WVJBIframe.src = 'https://__bridge_loaded__';
+                document.documentElement.appendChild(WVJBIframe);
+                setTimeout(function () {
+                    document.documentElement.removeChild(WVJBIframe)
+                }, 0)
+            }
+        }
+
+        // 调用注册方法
+        connectWebViewJavascriptBridge(function (bridge) {
+            if (isAndroid) {
+                bridge.init(function (message, responseCallback) {
+                    console.log('JS got a message', message);
+                    responseCallback(data);
+                });
+            }
+
+            bridge.registerHandler('jsbridge_showMessage', function (data, responseCallback) {
+                showResponse(data);
+            });
+
+            bridge.registerHandler('jsbridge_getJsMessage', function (data, responseCallback) {
+                showResponse(data);
+                responseCallback('native 传过来的是：' + data);
+            });
+
+            readyCallback();
+        });
+    }();
+} catch (msg) {
+
+}
+
+//扫码登录方法
+function scan(evt) {
+    var e = (evt) ? evt : window.event;
+    if (window.event) {
+        e.cancelBubble = true;// ie下阻止冒泡
+    } else {
+        e.stopPropagation();// 其它浏览器下阻止冒泡
+    }
+    $(".operationBox").hide()
+    try {
+        if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+            window.WebViewJavascriptBridge.callHandler('scanQRCode', null, function (response) {
+                showResponse(response);
+            });
+        } else if (navigator.userAgent.match(/android/i)) {
+            window.android.scanQRCode();
+        }
+    } catch (msg) {
+
+    }
+}
+
+/** 清理用户信息 */
+function delMemberInfo() {
+    try {
+        localStorage.clear();
+        if (isAndroid || isiOS) {
+            if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+                window.WebViewJavascriptBridge.callHandler('delMemberInfo', null);
+            } else if (navigator.userAgent.match(/android/i)) {
+                window.android.delMemberInfo();
+            }
+        }
+    } catch (err) {
+
+    }
+}
+
+/** 清理缓存 */
+function cleanUpAppCache(evt) {
+    var e = (evt) ? evt : window.event;
+    if (window.event) {
+        e.cancelBubble = true;// ie下阻止冒泡
+    } else {
+        e.stopPropagation();// 其它浏览器下阻止冒泡
+    }
+    $(".operationBox").hide()
+    localStorage.clear();
+    try {
+        if (isAndroid || isiOS) {
+            if (navigator.userAgent.match(/(iPhone|iPod|iPad);?/i)) {
+                window.WebViewJavascriptBridge.callHandler('cleanUpAppCache', null);
+            } else if (navigator.userAgent.match(/android/i)) {
+                window.android.cleanUpAppCache();
+            }
+        }
+    } catch (err) {
+
+    }
+}
+
+/** 响铃与振动 */
+function playSoundAndVibration() {
+    try {
+        if (isAndroid) {
+            window.android.playSoundAndVibration();
+        } else if (isiOS) {
+            window.WebViewJavascriptBridge.callHandler('playSoundAndVibration', {
+                "sound": true, // 声音
+                "vibration": true // 振动
+            }, function (response) {
+
+            });
+        }
+    } catch (msg) {
+
+    }
+}
+
+//socket建立连接
+try {
+    if (isLogin) {
+        var Socket = new WebSocket(socketUrl + appUserInfo.memberUsername);
+        Socket.onopen = function (ev) {
+            Socket.onmessage = function (evt) {
+                playSoundAndVibration();
+                var count = $(".mui-badge,.my-badge,.all,.news").html();
+                $(".mui-badge,.my-badge,.news,.all").html(parseInt(count) + 1).show();
+                vm.infoList.unshift(JSON.parse(evt.data))
+            };
+        }
+        window.onbeforeunload = onbeforeunload_handler;
+        window.onunload = onunload_handler;
+
+        function onbeforeunload_handler() {
+            Socket.close();
+        }
+
+        function onunload_handler() {
+            Socket.close();
+        }
+    }
+} catch (msg) {
+
+}
+
+var versionNum = nowEdition.version;
+if (Number(versionNum.replace(/\./g, "")) < 112) {
+    $(".closeWebView").hide();
+    $("#scan").hide();
+}
+
+
+//学校需要使用的代码
+document.domain = "zzuli.edu.cn";
+
+function loginFrame() {
+    var mainFrame = document.getElementById("myIframe");
+    var bheight = mainFrame.contentWindow.document.documentElement.scrollHeight;
+    mainFrame.style.width = '100%';
+    mainFrame.style.height = (bheight) + 'px';
+}
+
+function iframeOpen(url, label) {
+    $("#dv_box_main").hide();
+    $("#dv_index_menu").hide();
+    var iframe = $("#myIframe");
+
+    if (url.indexOf("http") > -1) {
+        iframe.attr("src", url);
+    } else {
+        iframe.attr("src", "http://info.zzuli.edu.cn" + url);
+    }
+//             	location.href="../app/common/yingyong_detail.jsp?appurl=http://infom.zzuli.edu.cn"+url+"&mc="+label;
+//             	window.top.location.replace("www.baidu.com");
+}
+
+
